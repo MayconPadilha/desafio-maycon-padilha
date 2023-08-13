@@ -12,8 +12,13 @@ class CaixaDaLanchonete {
             combo2: 7.50,
         };
 
-        const descontoDinheiro = 0.05; // 5%
-        const acrescimoCredito = 0.03; // 3%
+        const ITENS_ASSOCIADOS = {
+            chantily: "cafe",
+            queijo: "sanduiche",
+        };
+
+        const DESCONTO_DINHEIRO = 0.05; // 5%
+        const ACRESCIMO_CREDITO = 0.03; // 3%
 
         let valorTotal = 0;
 
@@ -24,19 +29,14 @@ class CaixaDaLanchonete {
         for (const item of itens) {
             const [codigo, quantidade] = item.split(",");
 
-            if(parseInt(quantidade) === 0){
+            if(parseInt(quantidade) <= 0){
                 return "Quantidade inválida!";
             }
 
-            if(codigo === "chantily"){
-                const itemEncontrado = buscarItemNoCarrinho("cafe", itens);
-                if(itemEncontrado === null){
-                    return "Item extra não pode ser pedido sem o principal";
-                }
-            }
+            const itemPrincipal = ITENS_ASSOCIADOS[codigo];
 
-            if(codigo === "queijo"){
-                const itemEncontrado = buscarItemNoCarrinho("sanduiche", itens);
+            if (itemPrincipal) {
+                const itemEncontrado = this.buscarItemNoCarrinho(itemPrincipal, itens);
                 if(itemEncontrado === null){
                     return "Item extra não pode ser pedido sem o principal";
                 }
@@ -49,21 +49,11 @@ class CaixaDaLanchonete {
             }
         }
 
-        function buscarItemNoCarrinho(codigoBuscado, itens) {
-            for (const item of itens) {
-                const [codigo] = item.split(',');
-                if (codigo === codigoBuscado) {
-                    return item;
-                }
-            }
-            return null;
-        }
-
         if (metodoDePagamento === "dinheiro") {
-            valorTotal *= (1 - descontoDinheiro); 
+            valorTotal *= (1 - DESCONTO_DINHEIRO); 
             return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
         } else if (metodoDePagamento === "credito") {
-            valorTotal *= (1 + acrescimoCredito);
+            valorTotal *= (1 + ACRESCIMO_CREDITO);
             return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
         } else if (metodoDePagamento === "debito") {
             return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
@@ -71,7 +61,16 @@ class CaixaDaLanchonete {
             return "Forma de pagamento inválida!";
         }
 
-        // return `R$ ${valorTotal.toFixed(2).replace(".", ",")}`;
+    }
+
+    buscarItemNoCarrinho(codigoBuscado, itens) {
+        for (const item of itens) {
+            const [codigo] = item.split(',');
+            if (codigo === codigoBuscado) {
+                return item;
+            }
+        }
+        return null;
     }
 }
 

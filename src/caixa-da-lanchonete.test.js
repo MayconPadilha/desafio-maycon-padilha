@@ -48,4 +48,55 @@ describe('CaixaDaLanchonete', () => {
         ['queijo com outro item', 'debito', 'Item extra não pode ser pedido sem o principal', ['cafe,1', 'queijo,1']],
     ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
         validaTeste(formaDePagamento, resultadoEsperado, itens));
+
+    test.each([
+        ['debito', 'R$ 4,50', ['cafe,1','chantily,1']],
+    ])('compra de cafe com chantily em %p deve resultar em %p', validaTeste);
+
+    test.each([
+        ['credito', 'R$ 15,96', ['combo1,1','cafe,2']],
+    ])('compra de combo e dois cafe em %p deve resultar em %p', validaTeste);
+
+    test.each([
+        ['debito', 'R$ 15,00', ['sanduiche,2','queijo,1']],
+    ])('compra de sanduiche com queijo em %p deve resultar em %p', validaTeste);
+
+    test.each([
+        ['compra de combo sem itens', 'credito', 'Quantidade inválida!', ['combo1,0']],
+        ['compra de combo sem itens', 'credito', 'Quantidade inválida!', ['combo1,-1']],
+        ['compra de item inexistente', 'debito', 'Item inválido!', ['bolinho,1']],
+        ['compra de suco e sanduiche', 'dinheiro', 'R$ 12,06', ['suco,1', 'sanduiche,1']],
+        ['compra de salgado com queijo', 'credito', 'Item extra não pode ser pedido sem o principal', ['salgado,1', 'queijo,1']],
+        ['compra de chantily com suco', 'debito', 'Item extra não pode ser pedido sem o principal', ['chantily,1', 'suco,1']],
+    ])('compra %p em %p deve resultar em %p', (_, formaDePagamento, resultadoEsperado, itens) =>
+        validaTeste(formaDePagamento, resultadoEsperado, itens));
+
+    test.each([
+        ['credito', 'R$ 99,09', ['combo2,3','cafe,4','chantily,4','sanduiche,1','queijo,6','suco,6']],
+    ])('compra de varios itens em %p deve resultar em %p', validaTeste);
+
+    test.each([
+        ['credito', 'Item inválido!', ['batatafrita,4']],
+        ['debito', 'Item inválido!', ['batatafrita,4']],
+        ['dinheiro', 'Item inválido!', ['batatafrita,4']],
+    ])('compra de item invalido em %p', validaTeste);
+
+    test.each([
+        ['credito', 'Quantidade inválida!', ['cafe,0']],
+        ['debito', 'Quantidade inválida!', ['cafe,0']],
+        ['dinheiro', 'Quantidade inválida!', ['cafe,0']],
+    ])('compra de item com quantidade invalido em %p', validaTeste);
+
+    test.each([
+        ['pix', 'Forma de pagamento inválida!', ['cafe,2']],
+    ])('compra de item com forma de pagamento invalido em %p', validaTeste);
+
+    test.each([
+        ['debito', 'Item extra não pode ser pedido sem o principal', ['combo1,1','chantily,1']],
+    ])('compra de combo não são considerados como item principal.', validaTeste);
+    
+    test.each([
+        ['debito', 'R$ 10,50', ['cafe,1','chantily,5']],
+    ])('compra de item extra sem precisar de mais de um item principal.', validaTeste);
+
 });
