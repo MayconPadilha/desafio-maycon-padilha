@@ -79,21 +79,21 @@ describe('CaixaDaLanchonete', () => {
         ['credito', 'Item inválido!', ['batatafrita,4']],
         ['debito', 'Item inválido!', ['batatafrita,4']],
         ['dinheiro', 'Item inválido!', ['batatafrita,4']],
-    ])('compra de item invalido em %p', validaTeste);
+    ])('Validando mensagem de erro: compra de item invalido em %p', validaTeste);
 
     test.each([
         ['credito', 'Quantidade inválida!', ['cafe,0']],
         ['debito', 'Quantidade inválida!', ['cafe,0']],
         ['dinheiro', 'Quantidade inválida!', ['cafe,0']],
-    ])('compra de item com quantidade invalido em %p', validaTeste);
+    ])('Validando mensagem de erro: compra de item com quantidade invalido em %p', validaTeste);
 
     test.each([
         ['pix', 'Forma de pagamento inválida!', ['cafe,2']],
-    ])('compra de item com forma de pagamento invalido em %p', validaTeste);
+    ])('Validando mensagem de erro: compra de item com forma de pagamento invalido em %p', validaTeste);
 
     test.each([
         ['debito', 'Item extra não pode ser pedido sem o principal', ['combo1,1','chantily,1']],
-    ])('compra de combo não são considerados como item principal.', validaTeste);
+    ])('Validando mensagem de erro: compra de combo não são considerados como item principal.', validaTeste);
     
     test.each([
         ['debito', 'R$ 10,50', ['cafe,1','chantily,5']],
